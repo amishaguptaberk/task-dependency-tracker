@@ -15,6 +15,7 @@ To run the development server:
 
 ```bash
 npm i
+npx prisma migrate dev
 npm run dev
 ```
 
