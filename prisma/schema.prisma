@@ -11,4 +11,19 @@ model Todo {
   id        Int      @id @default(autoincrement())
   title     String
   createdAt DateTime  @default(now())
+  dueDate   DateTime?
+  imageUrl  String?
+  completed Boolean   @default(false)
+  dependencies TodoDependency[] @relation("Dependent") // edges where this todo is the dependent
+  dependedOnBy TodoDependency[] @relation("DependsOn") // edges where others depend on this todo
+}
+
+model TodoDependency {
+  id          Int  @id @default(autoincrement())
+  dependentId Int
+  dependsOnId Int
+  dependent   Todo @relation("Dependent", fields: [dependentId], references: [id], onDelete: Cascade)
+  dependsOn   Todo @relation("DependsOn", fields: [dependsOnId], references: [id], onDelete: Cascade)
+
+  @@unique([dependentId, dependsOnId])
 }
